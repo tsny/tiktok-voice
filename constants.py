@@ -9,7 +9,7 @@ voices = [
 
     # ENGLISH VOICES
     'en_au_001',                  # English AU - Female
-    'en_au_002',                  # English AU - Male
+    'en_au_002',                  # English AU - Male (Smooth)
     'en_uk_001',                  # English UK - Male 1
     'en_uk_003',                  # English UK - Male 2
     'en_us_001',                  # English US - Female (Int. 1)
@@ -18,6 +18,13 @@ voices = [
     'en_us_007',                  # English US - Male 2
     'en_us_009',                  # English US - Male 3
     'en_us_010',                  # English US - Male 4
+
+    # CALM / THERAPY VOICES
+    'en_female_emotional',        # Peaceful - warm, soft female
+    'en_female_samc',             # Empathetic - warm, supportive tone
+    'en_male_narration',          # Story Teller - deep, measured narrator
+    'en_male_cody',               # Serious - grounded, composed male
+    'en_male_jarvis',             # Alfred - refined, calm
 
     # EUROPE VOICES
     'fr_001',                     # French - Male 1
@@ -44,13 +51,12 @@ voices = [
     'kr_004',                     # Korean - Male 2
 
     # SINGING VOICES
-    'en_female_f08_salut_damour'  # Alto
-    'en_male_m03_lobby'           # Tenor
-    'en_female_f08_warmy_breeze'  # Warmy Breeze
-    'en_male_m03_sunshine_soon'   # Sunshine Soon
+    'en_female_f08_salut_damour', # Cottagecore - gentle alto
+    'en_female_f08_warmy_breeze', # Open Mic - soft, soothing
+    'en_female_f08_twinkle',      # Pop Lullaby - lullaby-style
+    'en_male_m03_lobby',          # Tenor
+    'en_male_m03_sunshine_soon',  # Toon Beat
 
     # OTHER
-    'en_male_narration'           # narrator
-    'en_male_funny'               # wacky
-    'en_female_emotional'         # peaceful
+    'en_male_funny',              # Wacky
 ]
