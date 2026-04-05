@@ -1,0 +1,8 @@
+voice.mp3
+text.txt
+batch
+.venv
+.env
+session-cache.json
+more-urls.txt
+__pycache__/
