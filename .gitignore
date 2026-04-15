@@ -1,6 +1,7 @@
 .DS_Store
-voice.mp3
-text.txt
+*.mp3
+*.txt
+
 batch
 .venv
 .env

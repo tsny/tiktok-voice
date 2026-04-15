@@ -8,26 +8,26 @@ Fork of [oscie57/tiktok-voice](https://github.com/oscie57/tiktok-voice).
 pip3 install -r requirements.txt
 ```
 
-Create a `.env` file with your TikTok session ID:
+Set your TikTok session ID via environment variable or pass it with `-s`:
 ```
-session_id=YOUR_SESSION_ID
+export TIKTOK_SESSION_ID=abc123def456abc123def456abc123de
 ```
 
 ## Usage
 
 **From text:**
 ```
-python3 main.py -v VOICE -t "your text" -s SESSION_ID
+python3 main.py -v en_us_002 -t "Hello, world!" 
 ```
 
 **From file:**
 ```
-python3 main.py -v VOICE -f input.txt -s SESSION_ID -n output.mp3
+python3 main.py -v en_us_ghostface -f input.txt -n output.mp3
 ```
 
 **Play instead of save:**
 ```
-python3 main.py -v VOICE -t "your text" -s SESSION_ID -p
+python3 main.py -v en_us_002 -t "Hello, world!" -p
 ```
 
 ## Notes

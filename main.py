@@ -42,7 +42,9 @@ def tts(session_id: str, text_speaker: str = "en_us_002", req_text: str = "TikTo
     urls_to_try = ([cached_url] + [u for u in BASE_URLS if u != cached_url]) if cached_url else BASE_URLS
 
     last_error = None
+    print(f"Checking {len(urls_to_try)} URL(s) for valid API endpoint...")
     for base_url in urls_to_try:
+        print(f"Trying {base_url}")
         try:
             r = requests.post(
                 f"{base_url}?text_speaker={text_speaker}&req_text={req_text}&speaker_map_type=0&aid=1233",
@@ -57,13 +59,18 @@ def tts(session_id: str, text_speaker: str = "en_us_002", req_text: str = "TikTo
             last_error = e
             continue
 
+        msg = data.get("message", "")
+        if isinstance(msg, str) and any(k in msg.lower() for k in ("session", "invalid", "unauthorized", "login")):
+            print(f"INVALID SESSION ID - server rejected credentials: {msg}")
+            return {"status": "Session ID is invalid", "status_code": r.status_code}
+
         if data.get("message") == "Couldn't load speech. Try again.":
-            print(f"Failed with {base_url}: {data}")
+            print(f"[{r.status_code}] Failed with {base_url}: {data.get('message', data)}")
             last_error = data
             continue
 
         if not data.get("data") or not data["data"].get("v_str"):
-            print(f"No audio data from {base_url}: {data}")
+            print(f"[{r.status_code}] No audio data from {base_url}: {data.get('message', data)}")
             last_error = data
             continue
 
@@ -156,8 +163,11 @@ def main():
     else:
         filename = 'voice.mp3'
 
-    if args.session is None:
-        print('FATAL: You need to have a TikTok session ID!')
+    session_id = args.session or os.environ.get('TIKTOK_SESSION_ID')
+    if session_id is not None:
+        print(f'Using session ID: {session_id[:8]}...')
+    if session_id is None:
+        print('FATAL: You need to have a TikTok session ID! Use -s or set TIKTOK_SESSION_ID.')
         exit(1)
 
     if args.file is not None:
@@ -170,7 +180,7 @@ def main():
             os.makedirs(batch_dir)
 
         for i, item in enumerate(textlist):
-            tts(args.session, text_speaker, item, f'{batch_dir}{i}.mp3', False)
+            tts(session_id, text_speaker, item, f'{batch_dir}{i}.mp3', False)
 
         batch_create(filename)
 
@@ -182,7 +192,7 @@ def main():
 
         return
 
-    tts(args.session, text_speaker, req_text, filename, play)
+    tts(session_id, text_speaker, req_text, filename, play)
 
 
 def randomvoice():
