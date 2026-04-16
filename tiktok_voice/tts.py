@@ -98,7 +98,7 @@ def tts(session_id: str, text_speaker: str = "en_us_002", req_text: str = "TikTo
             continue
 
         if data.get("message") == "Couldn't load speech. Try again.":
-            print(f"[{r.status_code}] Failed with {base_url}: {data.get('message', data)}")
+            print(f"[{r.status_code}] Failed with {base_url}: {data.get('message') or json.dumps(data, indent=2)}")
             last_error = data
             if base_url == cached_url:
                 cache.pop(session_id, None)
@@ -107,7 +107,7 @@ def tts(session_id: str, text_speaker: str = "en_us_002", req_text: str = "TikTo
             continue
 
         if not data.get("data") or not data["data"].get("v_str"):
-            print(f"[{r.status_code}] No audio data from {base_url}: {data.get('message', data)}")
+            print(f"[{r.status_code}] No audio data from {base_url}: {data.get('message') or json.dumps(data, indent=2)}")
             last_error = data
             if base_url == cached_url:
                 cache.pop(session_id, None)
@@ -142,7 +142,7 @@ def tts(session_id: str, text_speaker: str = "en_us_002", req_text: str = "TikTo
             "log": log
         }
 
-        print(output_data)
+        print(json.dumps(output_data, indent=2))
 
         if play is True:
             playsound.playsound(filename)
