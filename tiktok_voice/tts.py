@@ -6,7 +6,12 @@ _BASE_URLS_FILE = os.environ.get(
     'TIKTOK_BASE_URLS_FILE',
     os.path.join(os.path.dirname(__file__), '..', 'base-urls.txt')
 )
-_SESSION_CACHE_FILE = os.path.join(os.path.dirname(__file__), 'session-cache.json')
+_CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".config", "tiktok-voice")
+os.makedirs(_CONFIG_DIR, exist_ok=True)
+_SESSION_CACHE_FILE = os.environ.get(
+    "TIKTOK_SESSION_CACHE_FILE",
+    os.path.join(_CONFIG_DIR, "session-cache.json")
+)
 
 def _load_base_urls():
     try:
@@ -47,8 +52,21 @@ def tts(session_id: str, text_speaker: str = "en_us_002", req_text: str = "TikTo
     cached_url = cache.get(session_id)
     urls_to_try = ([cached_url] + [u for u in BASE_URLS if u != cached_url]) if cached_url else BASE_URLS
 
+    if text_speaker not in voices:
+        print(f"\033[33m\nWARN:  '{text_speaker}' is not a known voice ID\n\033[0m")
+
+    preview = req_text[:60].replace("+", " ") + ("..." if len(req_text) > 60 else "")
+    print(f"Session:  {session_id}")
+    print(f"Voice:    {text_speaker}")
+    print(f"Text:     {preview}")
+    print(f"Output:   {filename}")
+    if cached_url:
+        print(f"Cache:    {cached_url}")
+    else:
+        print(f"Cache:    none found for this session ({_SESSION_CACHE_FILE})")
+    print(f"URLs:     {len(urls_to_try)} endpoint(s) to try")
+    print("")
     last_error = None
-    print(f"Checking {len(urls_to_try)} URL(s) for valid API endpoint...")
     for base_url in urls_to_try:
         print(f"Trying {base_url}")
         try:
@@ -193,8 +211,6 @@ def main():
     if not session_id:
         print('FATAL: You need to have a TikTok session ID! Use -s or set TIKTOK_SESSION_ID.')
         exit(1)
-    print(f'Using session ID: {session_id[:8]}...')
-
     if args.file is not None:
         chunk_size = 200
         textlist = textwrap.wrap(req_text, width=chunk_size, break_long_words=True, break_on_hyphens=False)
