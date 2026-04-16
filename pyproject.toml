@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tiktok-voice"
+version = "0.1.0"
+description = "Add your description here"
+readme = "readme.md"
+requires-python = ">=3.12"
+dependencies = [
+    "playsound==1.2.2",
+    "requests>=2.27",
+]
+
+[project.scripts]
+tiktok-voice = "tiktok_voice.tts:main"
